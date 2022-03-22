@@ -4,7 +4,6 @@ const fs = require("fs/promises");
 const path = require("path");
 const inquirer = require("inquirer");
 
-const toml = require("@iarna/toml");
 const sort = require("sort-package-json");
 
 function escapeRegExp(string) {
@@ -18,22 +17,17 @@ function getRandomString(length) {
 
 async function main({ rootDirectory }) {
   const README_PATH = path.join(rootDirectory, "README.md");
-  const FLY_TOML_PATH = path.join(rootDirectory, "fly.toml");
   const EXAMPLE_ENV_PATH = path.join(rootDirectory, ".env.example");
   const ENV_PATH = path.join(rootDirectory, ".env");
   const PACKAGE_JSON_PATH = path.join(rootDirectory, "package.json");
 
-  const REPLACER = "indie-stack-template";
+  const REPLACER = "pop-punk-stack-template";
 
   const DIR_NAME = path.basename(rootDirectory);
   const SUFFIX = getRandomString(2);
+  const APP_NAME = DIR_NAME + "-" + SUFFIX;
 
-  const APP_NAME = (DIR_NAME + "-" + SUFFIX)
-    // get rid of anything that's not allowed in an app name
-    .replace(/[^a-zA-Z0-9-_]/g, "-");
-
-  const [prodContent, readme, env, packageJson] = await Promise.all([
-    fs.readFile(FLY_TOML_PATH, "utf-8"),
+  const [readme, env, packageJson] = await Promise.all([
     fs.readFile(README_PATH, "utf-8"),
     fs.readFile(EXAMPLE_ENV_PATH, "utf-8"),
     fs.readFile(PACKAGE_JSON_PATH, "utf-8"),
@@ -43,9 +37,6 @@ async function main({ rootDirectory }) {
     /^SESSION_SECRET=.*$/m,
     `SESSION_SECRET="${getRandomString(16)}"`
   );
-
-  const prodToml = toml.parse(prodContent);
-  prodToml.app = prodToml.app.replace(REPLACER, APP_NAME);
 
   const newReadme = readme.replace(
     new RegExp(escapeRegExp(REPLACER), "g"),
@@ -60,7 +51,6 @@ async function main({ rootDirectory }) {
     ) + "\n";
 
   await Promise.all([
-    fs.writeFile(FLY_TOML_PATH, toml.stringify(prodToml)),
     fs.writeFile(README_PATH, newReadme),
     fs.writeFile(ENV_PATH, newEnv),
     fs.writeFile(PACKAGE_JSON_PATH, newPackageJson),
@@ -68,23 +58,13 @@ async function main({ rootDirectory }) {
 
   execSync(`npm run setup`, { stdio: "inherit", cwd: rootDirectory });
 
-  // TODO: There is currently an issue with the test cleanup script that results
-  // in an error when running Cypress in some cases. Add this question back
-  // when this is fixed.
-  // await askSetupQuestions({ rootDirectory }).catch((error) => {
-  //   if (error.isTtyError) {
-  //     // Prompt couldn't be rendered in the current environment
-  //   } else {
-  //     throw error;
-  //   }
-  // });
-
-  console.log(
-    `Setup is complete. You're now ready to rock and roll 🤘
-
-Start development with \`npm run dev\`
-    `.trim()
-  );
+  await askSetupQuestions({ rootDirectory }).catch((error) => {
+    if (error.isTtyError) {
+      // Prompt couldn't be rendered in the current environment
+    } else {
+      throw error;
+    }
+  });
 }
 
 async function askSetupQuestions({ rootDirectory }) {
@@ -104,6 +84,7 @@ async function askSetupQuestions({ rootDirectory }) {
     );
     execSync(`npm run validate`, { stdio: "inherit", cwd: rootDirectory });
   }
+  console.log(`✅  Project is ready! Start development with "npm run dev"`);
 }
 
 module.exports = main;

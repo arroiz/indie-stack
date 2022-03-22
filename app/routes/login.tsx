@@ -12,6 +12,7 @@ import {
 import { createUserSession, getUserId } from "~/session.server";
 import { verifyLogin } from "~/models/user.server";
 import { validateEmail } from "~/utils";
+import { Box, Button, Checkbox, Flex, Input, Text } from "@chakra-ui/react";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await getUserId(request);
@@ -93,18 +94,22 @@ export default function LoginPage() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full flex-col justify-center">
-      <div className="mx-auto w-full max-w-md px-8">
-        <Form method="post" className="space-y-6">
-          <div>
-            <label
+    <Flex minHeight="100vh" flexDir="column" justify="center">
+      <Box marginX="auto" width="100%" maxWidth="md" paddingX={8}>
+        <Flex as={Form} method="post" flexDirection="column" gap={6}>
+          <Box>
+            <Text
+              as="label"
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              display="block"
+              fontSize="sm"
+              fontWeight="semibold"
+              color="gray.700"
             >
               Email address
-            </label>
-            <div className="mt-1">
-              <input
+            </Text>
+            <Box marginTop={1}>
+              <Input
                 ref={emailRef}
                 id="email"
                 required
@@ -114,25 +119,35 @@ export default function LoginPage() {
                 autoComplete="email"
                 aria-invalid={actionData?.errors?.email ? true : undefined}
                 aria-describedby="email-error"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+                width="100%"
+                borderRadius="base"
+                borderWidth="1px"
+                borderColor="gray.500"
+                paddingX={2}
+                paddingY={1}
+                fontSize="lg"
               />
               {actionData?.errors?.email && (
-                <div className="pt-1 text-red-700" id="email-error">
+                <Box paddingTop={1} color="red.700" id="email-error">
                   {actionData.errors.email}
-                </div>
+                </Box>
               )}
-            </div>
-          </div>
+            </Box>
+          </Box>
 
-          <div>
-            <label
+          <Box>
+            <Text
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              as="label"
+              display="block"
+              fontSize="sm"
+              fontWeight="semibold"
+              color="gray.700"
             >
               Password
-            </label>
-            <div className="mt-1">
-              <input
+            </Text>
+            <Box marginTop={1}>
+              <Input
                 id="password"
                 ref={passwordRef}
                 name="password"
@@ -140,53 +155,76 @@ export default function LoginPage() {
                 autoComplete="new-password"
                 aria-invalid={actionData?.errors?.password ? true : undefined}
                 aria-describedby="password-error"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+                width="100%"
+                borderRadius="base"
+                borderWidth="1px"
+                borderColor="gray.500"
+                paddingX={2}
+                paddingY={1}
+                fontSize="lg"
               />
               {actionData?.errors?.password && (
-                <div className="pt-1 text-red-700" id="password-error">
+                <Box paddingTop={1} color="red.700" id="password-error">
                   {actionData.errors.password}
-                </div>
+                </Box>
               )}
-            </div>
-          </div>
+            </Box>
+          </Box>
 
           <input type="hidden" name="redirectTo" value={redirectTo} />
-          <button
+          <Button
             type="submit"
-            className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+            width="100%"
+            borderRadius="base"
+            backgroundColor="blue.500"
+            paddingX={4}
+            paddingY={2}
+            color="white"
+            _hover={{ backgroundColor: "blue.600" }}
+            _focus={{ backgroundColor: "blue.600" }}
           >
             Log in
-          </button>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
+          </Button>
+          <Flex justifyContent="space-between" alignItems="center">
+            <Flex alignItems="center">
+              <Checkbox
                 id="remember"
                 name="remember"
                 type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                height={4}
+                width={4}
+                borderRadius="base"
+                borderColor="gray.300"
+                color="blue.600"
               />
-              <label
+              <Text
+                as="label"
                 htmlFor="remember"
-                className="ml-2 block text-sm text-gray-900"
+                marginLeft={2}
+                display="block"
+                fontSize="sm"
+                color="gray.900"
               >
                 Remember me
-              </label>
-            </div>
-            <div className="text-center text-sm text-gray-500">
+              </Text>
+            </Flex>
+            <Box textAlign="center" fontSize="sm" color="gray.500">
               Don't have an account?{" "}
-              <Link
-                className="text-blue-500 underline"
+              <Box
+                as={Link}
+                color="blue.500"
+                textDecoration="underline"
                 to={{
                   pathname: "/join",
                   search: searchParams.toString(),
                 }}
               >
                 Sign up
-              </Link>
-            </div>
-          </div>
-        </Form>
-      </div>
-    </div>
+              </Box>
+            </Box>
+          </Flex>
+        </Flex>
+      </Box>
+    </Flex>
   );
 }

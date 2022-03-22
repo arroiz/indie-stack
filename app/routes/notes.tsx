@@ -4,6 +4,15 @@ import type { LoaderFunction } from "remix";
 import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils";
 import { getNoteListItems } from "~/models/note.server";
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Heading,
+  Text,
+  Link as ChakraLink,
+} from "@chakra-ui/react";
 
 type LoaderData = {
   noteListItems: Awaited<ReturnType<typeof getNoteListItems>>;
@@ -16,58 +25,82 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function NotesPage() {
-  const data = useLoaderData() as LoaderData;
+  const data = useLoaderData<LoaderData>();
   const user = useUser();
 
   return (
-    <div className="flex h-full min-h-screen flex-col">
-      <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
-        <h1 className="text-3xl font-bold">
-          <Link to=".">Notes</Link>
-        </h1>
-        <p>{user.email}</p>
-        <Form action="/logout" method="post">
-          <button
+    <Flex height="100%" minHeight="100vh" flexDirection="column">
+      <Flex
+        as="header"
+        alignItems="center"
+        justifyContent="space-between"
+        bg="gray.700"
+        padding={4}
+        color="white"
+      >
+        <Heading as="h1" fontSize="3xl" fontWeight="bold">
+          <Box as={Link} to=".">
+            Notes
+          </Box>
+        </Heading>
+        <Text>{user.email}</Text>
+        <Box as={Form} action="/logout" method="post">
+          <Button
             type="submit"
-            className="rounded bg-slate-600 py-2 px-4 text-blue-100 hover:bg-blue-500 active:bg-blue-600"
+            borderRadius="base"
+            bg="gray.600"
+            paddingY={2}
+            paddingX={4}
+            color="blue.100"
+            _hover={{ bg: "blue.500" }}
+            _active={{ bg: "blue.600" }}
           >
             Logout
-          </button>
-        </Form>
-      </header>
+          </Button>
+        </Box>
+      </Flex>
 
-      <main className="flex h-full bg-white">
-        <div className="h-full w-80 border-r bg-gray-50">
-          <Link to="new" className="block p-4 text-xl text-blue-500">
+      <Flex as="main" flex="1" height="100%" bg="white">
+        <Flex flexDirection="column" width={80} bg="gray.50">
+          <Box
+            as={Link}
+            to="new"
+            display="block"
+            padding={4}
+            fontSize="xl"
+            color="blue.500"
+          >
             + New Note
-          </Link>
+          </Box>
 
-          <hr />
+          <Divider />
 
           {data.noteListItems.length === 0 ? (
-            <p className="p-4">No notes yet</p>
+            <Text padding={4}>No notes yet</Text>
           ) : (
             <ol>
               {data.noteListItems.map((note) => (
                 <li key={note.id}>
-                  <NavLink
-                    className={({ isActive }) =>
-                      `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`
-                    }
+                  <ChakraLink
+                    as={NavLink}
+                    display="block"
+                    padding={4}
+                    fontSize="xl"
+                    _activeLink={{ backgroundColor: "white" }}
                     to={note.id}
                   >
                     📝 {note.title}
-                  </NavLink>
+                  </ChakraLink>
                 </li>
               ))}
             </ol>
           )}
-        </div>
+        </Flex>
 
-        <div className="flex-1 p-6">
+        <Flex flex="1" padding={6}>
           <Outlet />
-        </div>
-      </main>
-    </div>
+        </Flex>
+      </Flex>
+    </Flex>
   );
 }

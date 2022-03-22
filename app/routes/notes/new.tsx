@@ -5,6 +5,7 @@ import Alert from "@reach/alert";
 
 import { createNote } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
+import { Box, Button, Text, Textarea, Input } from "@chakra-ui/react";
 
 type ActionData = {
   errors?: {
@@ -62,55 +63,86 @@ export default function NewNotePage() {
         width: "100%",
       }}
     >
-      <div>
-        <label className="flex w-full flex-col gap-1">
-          <span>Title: </span>
-          <input
+      <Box>
+        <Text
+          as="label"
+          display="flex"
+          width="100%"
+          flexDirection="column"
+          gap={1}
+        >
+          <Text>Title: </Text>
+          <Input
             ref={titleRef}
             name="title"
-            className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
+            flex="1"
+            borderRadius="md"
+            borderWidth={2}
+            borderColor="blue.500"
+            paddingX={3}
+            fontSize="lg"
+            lineHeight={2}
             aria-invalid={actionData?.errors?.title ? true : undefined}
             aria-errormessage={
               actionData?.errors?.title ? "title-error" : undefined
             }
           />
-        </label>
+        </Text>
         {actionData?.errors?.title && (
-          <Alert className="pt-1 text-red-700" id="title=error">
+          <Box as={Alert} paddingTop={1} color="red.700" id="title=error">
             {actionData.errors.title}
-          </Alert>
+          </Box>
         )}
-      </div>
+      </Box>
 
-      <div>
-        <label className="flex w-full flex-col gap-1">
-          <span>Body: </span>
-          <textarea
+      <Box>
+        <Text
+          as="label"
+          display="flex"
+          width="100%"
+          flexDirection="column"
+          gap={1}
+        >
+          <Text>Body: </Text>
+          <Textarea
             ref={bodyRef}
             name="body"
             rows={8}
-            className="w-full flex-1 rounded-md border-2 border-blue-500 py-2 px-3 text-lg leading-6"
+            flex="1"
+            width="100%"
+            borderRadius="md"
+            borderWidth={2}
+            borderColor="blue.500"
+            paddingX={3}
+            fontSize="lg"
+            lineHeight={2}
             aria-invalid={actionData?.errors?.body ? true : undefined}
             aria-errormessage={
               actionData?.errors?.body ? "body-error" : undefined
             }
           />
-        </label>
+        </Text>
         {actionData?.errors?.body && (
-          <Alert className="pt-1 text-red-700" id="body=error">
+          <Box as={Alert} paddingTop={1} color="red.700" id="title=error">
             {actionData.errors.body}
-          </Alert>
+          </Box>
         )}
-      </div>
+      </Box>
 
-      <div className="text-right">
-        <button
+      <Box textAlign="right">
+        <Button
           type="submit"
-          className="rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+          borderRadius="base"
+          bg="blue.500"
+          paddingY={2}
+          paddingX={4}
+          textColor="white"
+          _hover={{ bg: "blue.600" }}
+          _focus={{ bg: "blue.400" }}
         >
           Save
-        </button>
-      </div>
+        </Button>
+      </Box>
     </Form>
   );
 }

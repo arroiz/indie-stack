@@ -1,3 +1,4 @@
+import { Divider, Heading, Text, Box, Button } from "@chakra-ui/react";
 import type { LoaderFunction, ActionFunction } from "remix";
 import { redirect } from "remix";
 import { json, useLoaderData, useCatch, Form } from "remix";
@@ -35,19 +36,29 @@ export default function NoteDetailsPage() {
   const data = useLoaderData() as LoaderData;
 
   return (
-    <div>
-      <h3 className="text-2xl font-bold">{data.note.title}</h3>
-      <p className="py-6">{data.note.body}</p>
-      <hr className="my-4" />
+    <Box>
+      <Heading as="h3" fontSize="2xl" fontWeight="bold">
+        {data.note.title}
+      </Heading>
+      <Text as="p" paddingY={6}>
+        {data.note.body}
+      </Text>
+      <Divider marginY={4} />
       <Form method="post">
-        <button
+        <Button
           type="submit"
-          className="rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+          borderRadius="base"
+          backgroundColor="blue.500"
+          paddingY={2}
+          paddingX={4}
+          color="white"
+          _hover={{ backgroundColor: "blue.600" }}
+          _focus={{ backgroundColor: "blue.400" }}
         >
           Delete
-        </button>
+        </Button>
       </Form>
-    </div>
+    </Box>
   );
 }
 

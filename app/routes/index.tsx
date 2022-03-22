@@ -1,79 +1,182 @@
+import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { Link } from "remix";
 import { useOptionalUser } from "~/utils";
 
 export default function Index() {
   const user = useOptionalUser();
+
   return (
-    <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
-      <div className="relative sm:pb-16 sm:pt-8">
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="relative shadow-xl sm:overflow-hidden sm:rounded-2xl">
-            <div className="absolute inset-0">
-              <img
-                className="h-full w-full object-cover"
-                src="https://user-images.githubusercontent.com/1500684/157774694-99820c51-8165-4908-a031-34fc371ac0d6.jpg"
-                alt="Sonic Youth On Stage"
+    <Flex
+      as="main"
+      position="relative"
+      minHeight="100vh"
+      backgroundColor="gray.50"
+      alignItems={{ base: "stretch", sm: "center" }}
+      justifyContent={{ base: "flex-start", sm: "center" }}
+    >
+      <Box position="relative" width="100%" paddingBottom={16} paddingTop={8}>
+        <Box marginX="auto" maxWidth="7xl" paddingX={{ base: 6, lg: 8 }}>
+          <Box
+            position="relative"
+            boxShadow="xl"
+            overflow={{ base: "visible", sm: "hidden" }}
+            borderRadius="2xl"
+          >
+            <Box width="100%" position="absolute" inset="0 0 0 0">
+              <Image
+                height="100%"
+                width="100%"
+                objectFit="cover"
+                src="https://user-images.githubusercontent.com/44916285/159194824-2bdfed7c-24ab-4b98-b9fc-dc2001f1bf7c.jpeg"
+                alt="Blink-182 on Big Day Out festival"
               />
-              <div className="absolute inset-0 bg-[color:rgba(254,204,27,0.5)] mix-blend-multiply" />
-            </div>
-            <div className="lg:pb-18 relative px-4 pt-16 pb-8 sm:px-6 sm:pt-24 sm:pb-14 lg:px-8 lg:pt-32">
-              <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
-                <span className="block uppercase text-yellow-500 drop-shadow-md">
-                  Indie Stack
-                </span>
-              </h1>
-              <p className="mx-auto mt-6 max-w-lg text-center text-xl text-white sm:max-w-3xl">
+              <Box
+                position="absolute"
+                inset="0 0 0 0"
+                bg="rgba(255, 25, 12, 0.5)"
+                mixBlendMode="multiply"
+              />
+            </Box>
+            <Box
+              position="relative"
+              paddingX={{ base: 4, sm: 6, lg: 8 }}
+              paddingTop={{ base: 16, sm: 24, lg: 32 }}
+              paddingBottom={{ base: 8, lg: 14 }}
+            >
+              <Heading
+                as="h1"
+                textAlign="center"
+                fontSize={{ base: "6xl", sm: "8xl", lg: "9xl" }}
+                fontWeight="extrabold"
+                letterSpacing="-0.025em"
+                textTransform="uppercase"
+                color="red.600"
+                lineHeight="1"
+                dropShadow="md"
+              >
+                Pop Punk Stack
+              </Heading>
+              <Text
+                as="p"
+                marginX="auto"
+                marginTop={6}
+                maxWidth={{ base: "lg", sm: "3xl" }}
+                textAlign="center"
+                fontWeight="semibold"
+                fontSize="xl"
+                color="white"
+              >
                 Check the README.md file for instructions on how to get this
                 project deployed.
-              </p>
-              <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
+              </Text>
+              <Box
+                marginX="auto"
+                marginTop="10"
+                maxWidth={{ base: "sm", sm: "none" }}
+                display={{ base: "none", sm: "flex" }}
+                justifyContent={{ base: "none", sm: "center" }}
+              >
                 {user ? (
-                  <Link
+                  <Flex
+                    as={Link}
                     to="/notes"
-                    className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
+                    alignItems="center"
+                    justifyContent="center"
+                    borderRadius="md"
+                    backgroundColor="white"
+                    paddingX={{ base: 4, md: 8 }}
+                    paddingY={3}
+                    fontWeight="semibold"
+                    color="red.700"
+                    dropShadow="sm"
+                    _hover={{
+                      backgroundColor: "red.50",
+                    }}
                   >
                     View Notes for {user.email}
-                  </Link>
+                  </Flex>
                 ) : (
-                  <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
-                    <Link
+                  <Box
+                    marginY={{ base: 4, sm: 0 }}
+                    marginX="auto"
+                    display={{ base: "block", sm: "inline-grid" }}
+                    gridTemplateColumns="repeat(2, 1fr)"
+                    gap={5}
+                  >
+                    <Flex
+                      as={Link}
                       to="/join"
-                      className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
+                      alignItems="center"
+                      justifyContent="center"
+                      borderRadius="md"
+                      backgroundColor="white"
+                      paddingX={{ base: 4, md: 8 }}
+                      paddingY={3}
+                      fontWeight="semibold"
+                      color="red.700"
+                      dropShadow="sm"
+                      _hover={{
+                        backgroundColor: "red.50",
+                      }}
                     >
                       Sign up
-                    </Link>
-                    <Link
+                    </Flex>
+                    <Flex
+                      as={Link}
+                      alignItems="center"
+                      justifyContent="center"
+                      borderRadius="md"
+                      backgroundColor="red.500"
+                      paddingX={{ base: 4, md: 8 }}
+                      paddingY={3}
+                      fontWeight="semibold"
+                      color="white"
+                      dropShadow="sm"
+                      _hover={{
+                        backgroundColor: "red.600",
+                      }}
                       to="/login"
-                      className="flex items-center justify-center rounded-md bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600  "
                     >
                       Log In
-                    </Link>
-                  </div>
+                    </Flex>
+                  </Box>
                 )}
-              </div>
+              </Box>
               <a href="https://remix.run">
-                <img
+                <Image
                   src="https://user-images.githubusercontent.com/1500684/158298926-e45dafff-3544-4b69-96d6-d3bcc33fc76a.svg"
                   alt="Remix"
-                  className="mx-auto mt-16 w-full max-w-[12rem] md:max-w-[16rem]"
+                  marginX="auto"
+                  marginTop={16}
+                  width="100%"
+                  maxWidth={{ base: "12rem", md: "16rem" }}
                 />
               </a>
-            </div>
-          </div>
-        </div>
-
-        <div className="mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8">
-          <div className="mt-6 flex flex-wrap justify-center gap-8">
+            </Box>
+          </Box>
+        </Box>
+        <Box
+          marginX="auto"
+          maxWidth="7xl"
+          paddingY={2}
+          paddingX={{ sm: 6, lg: 8 }}
+        >
+          <Flex marginTop={6} flexWrap="wrap" justifyContent="center" gap={8}>
             {[
               {
-                src: "https://user-images.githubusercontent.com/1500684/157764397-ccd8ea10-b8aa-4772-a99b-35de937319e1.svg",
-                alt: "Fly.io",
-                href: "https://fly.io",
+                src: "https://user-images.githubusercontent.com/44916285/159195394-ab3caed7-dc3e-4b8f-9908-06f308fc5cfe.png",
+                alt: "vercel",
+                href: "https://vercel.com",
               },
               {
-                src: "https://user-images.githubusercontent.com/1500684/157764395-137ec949-382c-43bd-a3c0-0cb8cb22e22d.svg",
-                alt: "SQLite",
-                href: "https://sqlite.org",
+                src: "https://user-images.githubusercontent.com/44916285/159195073-aad47ad9-1dcb-4a06-88f3-0f069f10c436.png",
+                alt: "mysql",
+                href: "https://www.mysql.com/",
+              },
+              {
+                src: "https://user-images.githubusercontent.com/44916285/159195347-eff04fe9-9a62-42af-a04a-b7fdd09084b6.png",
+                alt: "planetscale",
+                href: "https://planetscale.com/",
               },
               {
                 src: "https://user-images.githubusercontent.com/1500684/157764484-ad64a21a-d7fb-47e3-8669-ec046da20c1f.svg",
@@ -81,9 +184,9 @@ export default function Index() {
                 href: "https://prisma.io",
               },
               {
-                src: "https://user-images.githubusercontent.com/1500684/157764276-a516a239-e377-4a20-b44a-0ac7b65c8c14.svg",
-                alt: "Tailwind",
-                href: "https://tailwindcss.com",
+                src: "https://user-images.githubusercontent.com/44916285/159196769-a7f669a2-4a25-4cc3-9a0b-bccc71bbd651.png",
+                alt: "chakra-ui",
+                href: "https://chakra-ui.com/",
               },
               {
                 src: "https://user-images.githubusercontent.com/1500684/157764454-48ac8c71-a2a9-4b5e-b19c-edef8b8953d6.svg",
@@ -121,17 +224,29 @@ export default function Index() {
                 href: "https://typescriptlang.org",
               },
             ].map((img) => (
-              <a
+              <Flex
+                as="a"
                 key={img.href}
                 href={img.href}
-                className="flex h-16 w-32 justify-center p-1 grayscale transition hover:grayscale-0 focus:grayscale-0"
+                height={16}
+                width={40}
+                justifyContent="center"
+                padding={1}
+                filter="grayscale(100%)"
+                transition="all 0.2s ease-in-out"
+                _hover={{
+                  filter: "grayscale(0%)",
+                }}
+                _focus={{
+                  filter: "grayscale(0%)",
+                }}
               >
-                <img alt={img.alt} src={img.src} />
-              </a>
+                <Image alt={img.alt} src={img.src} />
+              </Flex>
             ))}
-          </div>
-        </div>
-      </div>
-    </main>
+          </Flex>
+        </Box>
+      </Box>
+    </Flex>
   );
 }

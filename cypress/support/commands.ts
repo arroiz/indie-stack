@@ -63,7 +63,8 @@ function cleanupUser({ email }: { email?: string } = {}) {
 
 function deleteUserByEmail(email: string) {
   cy.exec(
-    `node --require esbuild-register ./cypress/support/delete-user.ts "${email}"`
+    `node --require esbuild-register ./cypress/support/delete-user.ts "${email}"`,
+    { failOnNonZeroExit: false }
   );
   cy.clearCookie("__session");
 }

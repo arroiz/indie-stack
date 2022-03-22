@@ -1,22 +1,21 @@
-# Remix Indie Stack
+# Remix Pop Punk Stack
 
-![The Remix Indie Stack](https://repository-images.githubusercontent.com/465928257/a241fa49-bd4d-485a-a2a5-5cb8e4ee0abf)
+![The Remix Pop Punk Stack](https://user-images.githubusercontent.com/44916285/159195652-218a4a13-228b-439b-b4d2-47b303972d10.png)
 
 Learn more about [Remix Stacks](https://remix.run/stacks).
 
 ```
-npx create-remix --template remix-run/indie-stack
+npx create-remix --template https://github.com/arroiz/remix-pop-punk-stack
 ```
 
 ## What's in the stack
 
-- [Fly app deployment](https://fly.io) with [Docker](https://www.docker.com/)
-- Production-ready [SQLite Database](https://sqlite.org)
-- Healthcheck endpoint for [Fly backups region fallbacks](https://fly.io/docs/reference/configuration/#services-http_checks)
+- [Vercel deployment](https://vercel.app)
+- Production-ready database with [planet scale](https://planetscale.com/)
 - [GitHub Actions](https://github.com/features/actions) for deploy on merge to production and staging environments
 - Email/Password Authentication with [cookie-based sessions](https://remix.run/docs/en/v1/api/remix#createcookiesessionstorage)
 - Database ORM with [Prisma](https://prisma.io)
-- Styling with [Tailwind](https://tailwindcss.com/)
+- Styling with [Chakra](https://tailwindcss.com/)
 - End-to-end testing with [Cypress](https://cypress.io)
 - Local third party request mocking with [MSW](https://mswjs.io)
 - Unit testing with [Vitest](https://vitest.dev) and [Testing Library](https://testing-library.com)
@@ -34,6 +33,14 @@ Not a fan of bits of the stack? Fork it, change it, and use `npx create-remix --
   npm run setup
   ```
 
+- [Setup the database](#setup-database)
+
+- Validate the app has been set up properly (optional):
+
+  ```sh
+  npm run validate
+  ```
+
 - Start dev server:
 
   ```sh
@@ -45,7 +52,7 @@ This starts your app in development mode, rebuilding assets on file changes.
 The database seed script creates a new user with some data you can use to get started:
 
 - Email: `rachel@remix.run`
-- Password: `racheliscool`
+- Password: `rachelrox`
 
 ### Relevant code:
 
@@ -55,60 +62,21 @@ This is a pretty simple note-taking app, but it's a good example of how you can 
 - user sessions, and verifying them [./app/session.server.ts](./app/session.server.ts)
 - creating, and deleting notes [./app/models/note.server.ts](./app/models/note.server.ts)
 
+### Setup database
+
+This project is configured to use [PlanetScale](https://planetscale.com/). This is a mysql cloud database that has a good free plan.
+
+To setup the database you will need to create a free account (no credit card required) and create a new database, after few seconds, when database be available you will just need to click in the button `connect`. In the modal that will show up, open the `connect with` selection and select `prisma`, then click in `new password` and copy the `DATABASE_URL` and paste in `.env` file.
+
+Now run the command: `npx prisma db push`
+
+`TODO create a file for this proccess`
+
 ## Deployment
 
 This Remix Stack comes with two GitHub Actions that handle automatically deploying your app to production and staging environments.
 
-Prior to your first deployment, you'll need to do a few things:
-
-- [Install Fly](https://fly.io/docs/getting-started/installing-flyctl/)
-
-- Sign up and log in to Fly
-
-  ```sh
-  fly auth signup
-  ```
-
-  > **Note:** If you have more than one Fly account, ensure that you are signed into the same account in the Fly CLI as you are in the browser. In your terminal, run `fly auth whoami` and ensure the email matches the Fly account signed into the browser.
-
-- Create two apps on Fly, one for staging and one for production:
-
-  ```sh
-  fly create indie-stack-template
-  fly create indie-stack-template-staging
-  ```
-
-  - Initialize Git.
-
-  ```sh
-  git init
-  ```
-
-- Create a new [GitHub Repository](https://repo.new), and then add it as the remote for your project. **Do not push your app yet!**
-
-  ```sh
-  git remote add origin <ORIGIN_URL>
-  ```
-
-- Add a `FLY_API_TOKEN` to your GitHub repo. To do this, go to your user settings on Fly and create a new [token](https://web.fly.io/user/personal_access_tokens/new), then add it to [your repo secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) with the name `FLY_API_TOKEN`.
-
-- Add a `SESSION_SECRET` to your fly app secrets, to do this you can run the following commands:
-
-  ```sh
-  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app indie-stack-template
-  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app indie-stack-template-staging
-  ```
-
-  If you don't have openssl installed, you can also use [1password](https://1password.com/generate-password) to generate a random secret, just replace `$(openssl rand -hex 32)` with the generated secret.
-
-- Create a persistent volume for the sqlite database for both your staging and production environments. Run the following:
-
-  ```sh
-  fly volumes create data --size 1 --app indie-stack-template
-  fly volumes create data --size 1 --app indie-stack-template-staging
-  ```
-
-Now that every is set up you can commit and push your changes to your repo. Every commit to your `main` branch will trigger a deployment to your production environment, and every commit to your `dev` branch will trigger a deployment to your staging environment.
+`TODO`
 
 ## GitHub Actions
 
